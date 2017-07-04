@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fictio.shop.ijjg.dao.GoodMapper">
+	<resultMap id="BaseResultMap" type="org.fictio.shop.ijjg.pojo.Good">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="goods_no" jdbcType="VARCHAR" property="goods_no" />
+		<result column="model_id" jdbcType="INTEGER" property="model_id" />
+		<result column="sell_price" jdbcType="DECIMAL" property="sell_price" />
+		<result column="market_price" jdbcType="DECIMAL" property="market_price" />
+		<result column="cost_price" jdbcType="DECIMAL" property="cost_price" />
+		<result column="up_time" jdbcType="TIMESTAMP" property="up_time" />
+		<result column="down_time" jdbcType="TIMESTAMP" property="down_time" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+		<result column="store_nums" jdbcType="INTEGER" property="store_nums" />
+		<result column="img" jdbcType="VARCHAR" property="img" />
+		<result column="ad_img" jdbcType="VARCHAR" property="ad_img" />
+		<result column="is_del" jdbcType="BIT" property="is_del" />
+		<result column="keywords" jdbcType="VARCHAR" property="keywords" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+		<result column="search_words" jdbcType="VARCHAR" property="search_words" />
+		<result column="weight" jdbcType="DECIMAL" property="weight" />
+		<result column="point" jdbcType="INTEGER" property="point" />
+		<result column="unit" jdbcType="VARCHAR" property="unit" />
+		<result column="brand_id" jdbcType="INTEGER" property="brand_id" />
+		<result column="visit" jdbcType="INTEGER" property="visit" />
+		<result column="favorite" jdbcType="INTEGER" property="favorite" />
+		<result column="sort" jdbcType="SMALLINT" property="sort" />
+		<result column="exp" jdbcType="INTEGER" property="exp" />
+		<result column="comments" jdbcType="INTEGER" property="comments" />
+		<result column="sale" jdbcType="INTEGER" property="sale" />
+		<result column="grade" jdbcType="INTEGER" property="grade" />
+		<result column="seller_id" jdbcType="INTEGER" property="seller_id" />
+		<result column="is_share" jdbcType="BIT" property="is_share" />
+		<result column="ordered_nums" jdbcType="INTEGER" property="ordered_nums" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="org.fictio.shop.ijjg.pojo.Good">
+		<result column="content" jdbcType="LONGVARCHAR" property="content" />
+		<result column="spec_array" jdbcType="LONGVARCHAR" property="spec_array" />
+	</resultMap>
+	
+	<select id="getGoodByPage" resultMap="BaseResultMap">
+		select * from jjg_goods limit #{pageStart},#{pageSize}
+	</select>
+	
+	
+	<select id="getGoodById" resultMap="BaseResultMap">
+		select * from jjg_goods where id = #{id}
+	</select>
+	<insert id="insert" parameterType="org.fictio.shop.ijjg.pojo.Good">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into jjg_goods (`name`, goods_no, model_id,
+		sell_price, market_price, cost_price,
+		up_time, down_time, create_time,
+		store_nums, img, ad_img,
+		is_del, keywords, description,
+		search_words, weight, point,
+		unit, brand_id, visit,
+		favorite, sort, `exp`,
+		comments, sale, grade,
+		seller_id, is_share, ordered_nums,
+		content, spec_array)
+		values (#{name,jdbcType=VARCHAR}, #{goods_no,jdbcType=VARCHAR},
+		#{model_id,jdbcType=INTEGER},
+		#{sell_price,jdbcType=DECIMAL}, #{market_price,jdbcType=DECIMAL}, #{cost_price,jdbcType=DECIMAL},
+		#{up_time,jdbcType=TIMESTAMP}, #{down_time,jdbcType=TIMESTAMP},
+		#{create_time,jdbcType=TIMESTAMP},
+		#{store_nums,jdbcType=INTEGER}, #{img,jdbcType=VARCHAR}, #{ad_img,jdbcType=VARCHAR},
+		#{is_del,jdbcType=BIT}, #{keywords,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{search_words,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, #{point,jdbcType=INTEGER},
+		#{unit,jdbcType=VARCHAR}, #{brand_id,jdbcType=INTEGER},
+		#{visit,jdbcType=INTEGER},
+		#{favorite,jdbcType=INTEGER}, #{sort,jdbcType=SMALLINT}, #{exp,jdbcType=INTEGER},
+		#{comments,jdbcType=INTEGER}, #{sale,jdbcType=INTEGER},
+		#{grade,jdbcType=INTEGER},
+		#{seller_id,jdbcType=INTEGER}, #{is_share,jdbcType=BIT}, #{ordered_nums,jdbcType=INTEGER},
+		#{content,jdbcType=LONGVARCHAR}, #{spec_array,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="org.fictio.shop.ijjg.pojo.Good">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into jjg_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				`name`,
+			</if>
+			<if test="goods_no != null">
+				goods_no,
+			</if>
+			<if test="model_id != null">
+				model_id,
+			</if>
+			<if test="sell_price != null">
+				sell_price,
+			</if>
+			<if test="market_price != null">
+				market_price,
+			</if>
+			<if test="cost_price != null">
+				cost_price,
+			</if>
+			<if test="up_time != null">
+				up_time,
+			</if>
+			<if test="down_time != null">
+				down_time,
+			</if>
+			<if test="create_time != null">
+				create_time,
+			</if>
+			<if test="store_nums != null">
+				store_nums,
+			</if>
+			<if test="img != null">
+				img,
+			</if>
+			<if test="ad_img != null">
+				ad_img,
+			</if>
+			<if test="is_del != null">
+				is_del,
+			</if>
+			<if test="keywords != null">
+				keywords,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="search_words != null">
+				search_words,
+			</if>
+			<if test="weight != null">
+				weight,
+			</if>
+			<if test="point != null">
+				point,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="brand_id != null">
+				brand_id,
+			</if>
+			<if test="visit != null">
+				visit,
+			</if>
+			<if test="favorite != null">
+				favorite,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="exp != null">
+				`exp`,
+			</if>
+			<if test="comments != null">
+				comments,
+			</if>
+			<if test="sale != null">
+				sale,
+			</if>
+			<if test="grade != null">
+				grade,
+			</if>
+			<if test="seller_id != null">
+				seller_id,
+			</if>
+			<if test="is_share != null">
+				is_share,
+			</if>
+			<if test="ordered_nums != null">
+				ordered_nums,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="spec_array != null">
+				spec_array,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="goods_no != null">
+				#{goods_no,jdbcType=VARCHAR},
+			</if>
+			<if test="model_id != null">
+				#{model_id,jdbcType=INTEGER},
+			</if>
+			<if test="sell_price != null">
+				#{sell_price,jdbcType=DECIMAL},
+			</if>
+			<if test="market_price != null">
+				#{market_price,jdbcType=DECIMAL},
+			</if>
+			<if test="cost_price != null">
+				#{cost_price,jdbcType=DECIMAL},
+			</if>
+			<if test="up_time != null">
+				#{up_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="down_time != null">
+				#{down_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="create_time != null">
+				#{create_time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="store_nums != null">
+				#{store_nums,jdbcType=INTEGER},
+			</if>
+			<if test="img != null">
+				#{img,jdbcType=VARCHAR},
+			</if>
+			<if test="ad_img != null">
+				#{ad_img,jdbcType=VARCHAR},
+			</if>
+			<if test="is_del != null">
+				#{is_del,jdbcType=BIT},
+			</if>
+			<if test="keywords != null">
+				#{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="search_words != null">
+				#{search_words,jdbcType=VARCHAR},
+			</if>
+			<if test="weight != null">
+				#{weight,jdbcType=DECIMAL},
+			</if>
+			<if test="point != null">
+				#{point,jdbcType=INTEGER},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="brand_id != null">
+				#{brand_id,jdbcType=INTEGER},
+			</if>
+			<if test="visit != null">
+				#{visit,jdbcType=INTEGER},
+			</if>
+			<if test="favorite != null">
+				#{favorite,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=SMALLINT},
+			</if>
+			<if test="exp != null">
+				#{exp,jdbcType=INTEGER},
+			</if>
+			<if test="comments != null">
+				#{comments,jdbcType=INTEGER},
+			</if>
+			<if test="sale != null">
+				#{sale,jdbcType=INTEGER},
+			</if>
+			<if test="grade != null">
+				#{grade,jdbcType=INTEGER},
+			</if>
+			<if test="seller_id != null">
+				#{seller_id,jdbcType=INTEGER},
+			</if>
+			<if test="is_share != null">
+				#{is_share,jdbcType=BIT},
+			</if>
+			<if test="ordered_nums != null">
+				#{ordered_nums,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="spec_array != null">
+				#{spec_array,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>

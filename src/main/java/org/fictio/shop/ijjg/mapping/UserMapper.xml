@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fictio.shop.ijjg.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="org.fictio.shop.ijjg.pojo.User">
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="userEmail" jdbcType="VARCHAR" property="useremail" />
+    <result column="userMobile" jdbcType="VARCHAR" property="usermobile" />
+    <result column="userRealName" jdbcType="VARCHAR" property="userrealname" />
+    <result column="userStatus" jdbcType="VARCHAR" property="userstatus" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
+  </resultMap>
+  <select id="selectUserByUsername" resultMap="BaseResultMap">
+  	select * from ijjg_user where username = #{username} limit 1
+  </select>
+  <update id="updateUserLastLoginTime" parameterType="org.fictio.shop.ijjg.pojo.User">
+  	update ijjg_user set lastLoginTime = #{lastlogintime} where user_id = #{userId}
+  </update>
+  <insert id="insert" parameterType="org.fictio.shop.ijjg.pojo.User">
+    insert into ijjg_user (user_id, userName, `password`, 
+      userEmail, userMobile, userRealName, 
+      userStatus, createTime, lastLoginTime
+      )
+    values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{useremail,jdbcType=VARCHAR}, #{usermobile,jdbcType=VARCHAR}, #{userrealname,jdbcType=VARCHAR}, 
+      #{userstatus,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{lastlogintime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.fictio.shop.ijjg.pojo.User">
+    insert into ijjg_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="useremail != null">
+        userEmail,
+      </if>
+      <if test="usermobile != null">
+        userMobile,
+      </if>
+      <if test="userrealname != null">
+        userRealName,
+      </if>
+      <if test="userstatus != null">
+        userStatus,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="lastlogintime != null">
+        lastLoginTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null">
+        #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="usermobile != null">
+        #{usermobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userrealname != null">
+        #{userrealname,jdbcType=VARCHAR},
+      </if>
+      <if test="userstatus != null">
+        #{userstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastlogintime != null">
+        #{lastlogintime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
