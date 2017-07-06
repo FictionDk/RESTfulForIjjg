@@ -11,7 +11,7 @@ import org.fictio.shop.ijjg.common.DefaultTokenManager;
 import org.fictio.shop.ijjg.pojo.RequestData;
 import org.fictio.shop.ijjg.pojo.ResponseData;
 import org.fictio.shop.ijjg.pojo.SignUser;
-import org.fictio.shop.ijjg.pojo.User;
+import org.fictio.shop.ijjg.pojo.UserIndex;
 import org.fictio.shop.ijjg.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +49,7 @@ public class UserController {
 			result.setSuccess();
 		} catch (Exception e) {
 			result.setMessage(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		response.setContentType("application/json; charset=UTF-8");
@@ -69,7 +70,7 @@ public class UserController {
 	public void getRegisteCode(HttpServletRequest request,HttpServletResponse response){
 		CacheManager cacheManager = CacheManager.getInstance();
 		Gson gson = new Gson();
-		User user = gson.fromJson(request.getParameter("json"),User.class);
+		SignUser user = gson.fromJson(request.getParameter("json"),SignUser.class);
 		ResponseData<String> result = new ResponseData<String>();
 		log.info(user.toString());
 		
@@ -98,18 +99,16 @@ public class UserController {
 	@RequestMapping("login")
 	@ResponseBody
 	public <T> void singInAct(HttpServletRequest request,HttpServletResponse response){
-		String signUserName = request.getParameter("json");
 		SignUser signUser = new SignUser();
 		Gson gson = new Gson();
-		signUser = gson.fromJson(signUserName, signUser.getClass());
-		
-		String token = new DefaultTokenManager().createToken(signUser.getUsername());
-		log.info("token="+token);
-		userService.updateUserLoginTime(signUser.getUsername());
-		
-		ResponseData<T> result = new ResponseData<>();
-		result.setSuccess();
-		result.setToken(token);
+		ResponseData<String> result = new ResponseData<>();
+		try {
+			String signUserName = request.getParameter("json");
+			signUser = gson.fromJson(signUserName, signUser.getClass());
+			result = userService.UserLogin(signUser);
+		} catch (Exception e) {
+			result.setMessage(e.getMessage());
+		}
 		response.setContentType("application/json; charset=UTF-8");
 		try {
 			response.getWriter().println(gson.toJson(result));
@@ -127,9 +126,9 @@ public class UserController {
 		String token = reqData.getToken();
 		String userName = new DefaultTokenManager().getUsername(token);
 		log.info("username = "+userName);
-		User u = userService.getUserInfoByUserName(userName);
+		UserIndex u = userService.getUserIndexByUserName(userName);
 		log.info(u.toString());
-		ResponseData<User> result = new ResponseData<User>();
+		ResponseData<UserIndex> result = new ResponseData<>();
 		result.setObject(u);
 		result.setSuccess();
 		result.setToken(token);
@@ -140,5 +139,4 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
-	
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fictio.shop.ijjg.dao.MessageMapper">
+	<resultMap id="BaseResultMap" type="org.fictio.shop.ijjg.pojo.Message">
+		<result column="msg_id" jdbcType="INTEGER" property="msgId" />
+		<result column="from_user_id" jdbcType="INTEGER" property="fromUserId" />
+		<result column="to_user_id" jdbcType="INTEGER" property="toUserId" />
+		<result column="message" jdbcType="VARCHAR" property="message" />
+		<result column="already_read" jdbcType="BIT" property="alreadyRead" />
+		<result column="msg_time" jdbcType="TIMESTAMP" property="msgTime" />
+	</resultMap>
+	<select id="getMessageListByToUserId" resultMap="BaseResultMap">
+		select * from ijjg_message where to_user_id = #{toUserId} and already_read =0;
+	</select>
+	<insert id="insert" parameterType="org.fictio.shop.ijjg.pojo.Message">
+		insert into ijjg_message (msg_id, from_user_id, to_user_id,
+		message, already_read, msg_time
+		)
+		values (#{msgId,jdbcType=INTEGER}, #{fromUserId,jdbcType=INTEGER},
+		#{toUserId,jdbcType=INTEGER},
+		#{message,jdbcType=VARCHAR}, #{alreadyRead,jdbcType=BIT}, #{msgTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="org.fictio.shop.ijjg.pojo.Message">
+		insert into ijjg_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="msgId != null">
+				msg_id,
+			</if>
+			<if test="fromUserId != null">
+				from_user_id,
+			</if>
+			<if test="toUserId != null">
+				to_user_id,
+			</if>
+			<if test="message != null">
+				message,
+			</if>
+			<if test="alreadyRead != null">
+				already_read,
+			</if>
+			<if test="msgTime != null">
+				msg_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="msgId != null">
+				#{msgId,jdbcType=INTEGER},
+			</if>
+			<if test="fromUserId != null">
+				#{fromUserId,jdbcType=INTEGER},
+			</if>
+			<if test="toUserId != null">
+				#{toUserId,jdbcType=INTEGER},
+			</if>
+			<if test="message != null">
+				#{message,jdbcType=VARCHAR},
+			</if>
+			<if test="alreadyRead != null">
+				#{alreadyRead,jdbcType=BIT},
+			</if>
+			<if test="msgTime != null">
+				#{msgTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+</mapper>

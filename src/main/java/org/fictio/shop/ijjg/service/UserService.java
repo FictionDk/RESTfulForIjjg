@@ -1,14 +1,20 @@
 package org.fictio.shop.ijjg.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.fictio.shop.ijjg.common.CacheManager;
+import org.fictio.shop.ijjg.common.CommenConstans;
 import org.fictio.shop.ijjg.common.DefaultTokenManager;
 import org.fictio.shop.ijjg.common.TokenManager;
 import org.fictio.shop.ijjg.dao.UserMapper;
+import org.fictio.shop.ijjg.pojo.Message;
+import org.fictio.shop.ijjg.pojo.ResponseData;
 import org.fictio.shop.ijjg.pojo.SignUser;
 import org.fictio.shop.ijjg.pojo.User;
+import org.fictio.shop.ijjg.pojo.UserIndex;
+import org.fictio.shop.ijjg.thread.AdminNoticeThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +28,8 @@ public class UserService {
 	@Autowired
 	private UserMapper userDao;
 	
-	public User showUser(){
-		User user = new User();
-		user.setUserId(1);
-		return user;
-	}
+	@Autowired
+	private MessageService msgService;
 
 	public User getUserInfoByUserName(String userName) {
 		User user = new User();
@@ -46,15 +49,16 @@ public class UserService {
 			throw new Exception("输入的code错误");
 		}
 		User user = new User();
-		user.setUsername(createUserName(signUser.getUsername()));
+		user.setUserName(createUserName(signUser.getUsername()));
 		user.setPassword(signUser.getPassword());
-		user.setUsermobile(signUser.getUsermobile());
-		user.setCreatetime(new Date());
+		user.setUserMobile(signUser.getUsermobile());
+		user.setCreateTime(new Date());
 		
-		int r = userDao.insert(user);
-		log.info(r+"");
+		userDao.insert(user);
+		log.info(user.toString());
+		AdminNoticeThread.sendNotice(user.getUserId(),msgService);
 		TokenManager tokenManager = new DefaultTokenManager();
-		return tokenManager.createToken(user.getUsername());
+		return tokenManager.createToken(user.getUserName());
 	}
 	
 	/**
@@ -94,9 +98,43 @@ public class UserService {
 	public void updateUserLoginTime(String username) {
 		User user = userDao.selectUserByUsername(username);
 		if(user != null){
-			user.setLastlogintime(new Date());
+			user.setLastLoginTime(new Date());
 			userDao.updateUserLastLoginTime(user);
 		}
+	}
+
+	/**
+	 * 个人中心页面资料获取(个人资料,私信通知)
+	 * @param userName
+	 * @return
+	 */
+	public UserIndex getUserIndexByUserName(String userName) {
+		UserIndex uIndex = new UserIndex();
+		User u = getUserInfoByUserName(userName);
+		List<Message> msgList = msgService.getUserMessageList(u.getUserId());
+		uIndex.setMessageCount(msgList.size());
+		uIndex.setMessageList(msgList);
+		uIndex.setUser(u);
+		return uIndex;
+	}
+
+	/**
+	 * 登录业务逻辑处理
+	 * @param signUser
+	 * @return
+	 */
+	public ResponseData<String> UserLogin(SignUser signUser) {
+		ResponseData<String> result = new ResponseData<>();
+		User u = userDao.selectUserByUsername(signUser.getUsername());
+		if(u.getPassword().equals(signUser.getPassword())){
+			String token = new DefaultTokenManager().createToken(signUser.getUsername());
+			updateUserLoginTime(signUser.getUsername());
+			result.setSuccess();
+			result.setToken(token);
+		}else{
+			result.setMessage(CommenConstans.PASSWORD_FAILED);
+		}
+		return result;
 	}
 	
 }

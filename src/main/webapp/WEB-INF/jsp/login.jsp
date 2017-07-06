@@ -11,6 +11,7 @@
 	<script src="../static/js/jquery-1.12.4.min.js" ></script>
 	<script src="../static/js/jquery.cookie.js" ></script>
 	<script src="../static/js/bootstrap.min.js" ></script>
+	<script src="../static/js/md5.js" ></script>
 <title>sign</title>
 </head>
 <body>
@@ -60,8 +61,8 @@ function saveAndPost(){
 	var username = $("#username").val();
 	var password = $("#password").val();
 	var rememberMe = $("#rememberMe").val();
-	console.log(username+"|"+password+"|"+rememberMe);
 	if(subValidate(username, password)){
+		password = md5(password);
 		var token = submit(username, password, rememberMe);
 	}
 	console.log("token="+token);
@@ -105,6 +106,8 @@ function submit(username,password,rememberMe){
 			if(data.code == "1"){
 				$.cookie('ijjg_token',data.token,{expires:7,path:'/'});
 				token = $.cookie('ijjg_token');
+			}else{
+				alert(data.message);
 			}
 		},
 	});

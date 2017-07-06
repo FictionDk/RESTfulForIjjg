@@ -5,7 +5,9 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.fictio.shop.ijjg.common.TokenException;
-import org.fictio.shop.ijjg.pojo.ExceptionResult;
+import org.fictio.shop.ijjg.pojo.ResponseData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,17 +24,30 @@ import com.google.gson.Gson;
 @ControllerAdvice
 public class ExceptionController {
 	
+	private static final Logger log = LoggerFactory.getLogger(ExceptionController.class);
+	
+	@ExceptionHandler(Exception.class)
+	public void handleGlobleException(Exception e,HttpServletResponse response){
+		log.info("get exceptin"+e.getMessage());
+		ResponseData<String> result = new ResponseData<>();
+		result.setMessage("service_exception"+e.getMessage());
+		Gson gson = new Gson();
+		try {
+			response.getWriter().println(gson.toJson(result));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public void handleHttpMessageNotReadableException(HttpMessageNotReadableException e,
 			HttpServletResponse response){
-		System.out.println("参数解析失败");
 		Gson gson = new Gson();
-		ExceptionResult exception = new ExceptionResult();
-		exception.setResultCode(404);
-		exception.setMsg("cound_not_read_json");
+		ResponseData<String> result = new ResponseData<>();
+		result.setMessage("cound_not_read_json");
 		try {
-			response.getWriter().println(gson.toJson(exception));
+			response.getWriter().println(gson.toJson(result));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -43,11 +58,10 @@ public class ExceptionController {
 	public void handleTokenInvlidException(TokenException e,HttpServletResponse response){
 		System.out.println("token检验失败");
 		Gson gson = new Gson();
-		ExceptionResult exception = new ExceptionResult();
-		exception.setResultCode(500);
-		exception.setMsg(e.getMessage());
+		ResponseData<String> result = new ResponseData<>();
+		result.setMessage(e.getMessage());
 		try {
-			response.getWriter().println(gson.toJson(exception));
+			response.getWriter().println(gson.toJson(result));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -59,11 +73,10 @@ public class ExceptionController {
 		System.out.println("服务器响应出错");
 		
 		Gson gson = new Gson();
-		ExceptionResult exception = new ExceptionResult();
-		exception.setResultCode(500);
-		exception.setMsg("service_error");
+		ResponseData<String> result = new ResponseData<>();
+		result.setMessage("service_error");
 		try {
-			response.getWriter().println(gson.toJson(exception));
+			response.getWriter().println(gson.toJson(result));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

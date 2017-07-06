@@ -24,8 +24,23 @@
 			</div>
 		</div>
 		<div class="col-md-12 column">
-			<dl id="userInfo">
-			</dl>
+			<div class="alert alert-success alert-dismissable" id="notice" style="display:none">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				<a href="#" class="alert-link" id="msg"></a>
+				</div>
+			<div class="list-group">
+				<a href="#" class="list-group-item active">个人中心</a>
+				<div class="list-group-item" id="usename">
+					用户名:
+				</div>
+				<div class="list-group-item" id="mobile">
+					手机号:
+				</div>
+				<div class="list-group-item" id="time">
+					最后登录时间:
+				</div>
+				<a class="list-group-item active"> <span id="count" class="badge">0</span>未读私信</a>
+			</div>
 		</div>
 	</div>
 </div>
@@ -48,18 +63,31 @@ function getUserInfo(){
 		success:function(data){
 			if(data.code == "1"){
 				console.info(data.object)
-				var htmlUser = "<dt>用户名<dt><dd>"+data.object.username+"</dd>";
-				var htmlLogin = "<dt>最后登录时间<dt><dd>"+data.object.lastlogintime+"</dd>";
-				var htmlMobile = "<dt>手机号<dt><dd>"+data.object.usermobile+"</dd>";
-				$("#userInfo").append(htmlUser);
-				$("#userInfo").append(htmlLogin);
-				$("#userInfo").append(htmlMobile);
+				var htmlUser = data.object.user.userName;
+				var htmlLogin = data.object.user.lastLoginTime?data.object.user.lastLoginTime:data.object.user.createTime;
+				var htmlMobile = data.object.user.userMobile;
+				var htmlCount = data.object.messageCount;
+				$("#usename").append(htmlUser);
+				$("#time").append(htmlLogin);
+				$("#mobile").append(htmlMobile);
+				$("#count").html(htmlCount);
+				if(htmlCount > 0){
+					showCountView(data.object.messageList);
+				}
 			}else{
 				alert(data.message);
 				turnToLoginView()
 			}
 		},
 	});
+}
+
+function showCountView(msgList){
+	console.info(msgList[0]);
+	if(msgList[0]['alreadyRead'] == 0){
+		$("#notice").show();
+		$("#msg").html(msgList[0]['message']+"<br>"+msgList[0]['msgTime']);
+	}
 }
 
 function turnToLoginView(){

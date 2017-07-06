@@ -5,21 +5,21 @@ import java.util.Date;
 public class User {
     private Integer userId;
 
-    private String username;
+    private String userName;
 
     private String password;
 
-    private String useremail;
+    private String userEmail;
 
-    private String usermobile;
+    private String userMobile;
 
-    private String userrealname;
+    private String userRealName;
 
-    private String userstatus;
+    private String userStatus;
 
-    private Date createtime;
+    private Date createTime;
 
-    private Date lastlogintime;
+    private Date lastLoginTime;
 
     public Integer getUserId() {
         return userId;
@@ -29,12 +29,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public String getPassword() {
@@ -45,59 +45,51 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getUseremail() {
-        return useremail;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUseremail(String useremail) {
-        this.useremail = useremail == null ? null : useremail.trim();
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail == null ? null : userEmail.trim();
     }
 
-    public String getUsermobile() {
-        return usermobile;
+    public String getUserMobile() {
+        return userMobile;
     }
 
-    public void setUsermobile(String usermobile) {
-        this.usermobile = usermobile == null ? null : usermobile.trim();
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile == null ? null : userMobile.trim();
     }
 
-    public String getUserrealname() {
-        return userrealname;
+    public String getUserRealName() {
+        return userRealName;
     }
 
-    public void setUserrealname(String userrealname) {
-        this.userrealname = userrealname == null ? null : userrealname.trim();
+    public void setUserRealName(String userRealName) {
+        this.userRealName = userRealName == null ? null : userRealName.trim();
     }
 
-    public String getUserstatus() {
-        return userstatus;
+    public String getUserStatus() {
+        return userStatus;
     }
 
-    public void setUserstatus(String userstatus) {
-        this.userstatus = userstatus == null ? null : userstatus.trim();
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus == null ? null : userStatus.trim();
     }
 
-    public Date getCreatetime() {
-        return createtime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getLastlogintime() {
-        return lastlogintime;
+    public Date getLastLoginTime() {
+        return lastLoginTime;
     }
 
-    public void setLastlogintime(Date lastlogintime) {
-        this.lastlogintime = lastlogintime;
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", useremail="
-				+ useremail + ", usermobile=" + usermobile + ", userrealname=" + userrealname + ", userstatus="
-				+ userstatus + ", createtime=" + createtime + ", lastlogintime=" + lastlogintime + "]";
-	}
-    
 }

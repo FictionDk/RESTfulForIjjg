@@ -11,6 +11,7 @@
 	<script src="../static/js/jquery-1.12.4.min.js" ></script>
 	<script src="../static/js/jquery.cookie.js" ></script>
 	<script src="../static/js/bootstrap.min.js" ></script>
+	<script src="../static/js/md5.js" ></script>
 <title>sign</title>
 </head>
 <body>
@@ -73,12 +74,13 @@ function saveAndPost(){
 	var code = 0;
 	var token = '';
 	if(subValidate(username,mobile,password,passwordAgain)){
-		r = getRegisterCode(username,mobile,password);
+		r = getRegisterCode(username,mobile);
 	}
 	if(r == 1){
 		code = fillCode();
 	}
 	if(code != 0){
+		password = md5(password);
 		var resultCode = submit(username,mobile,password,code);
 		if(resultCode == 1){
 			gotoIndex();
@@ -145,13 +147,13 @@ function submit(username,mobile,password,code){
 }
 
 //获取注册码
-function getRegisterCode(username,mobile,password){
+function getRegisterCode(username,mobile){
 	var r = '';
 	$.ajax({
 		type:"POST",
 		url:"/ijjg/user/getRegisteCode",
 		async: false,
-		data:"json="+JSON.stringify({"username":username,"usermobile":mobile,"password":password}),
+		data:"json="+JSON.stringify({"username":username,"usermobile":mobile}),
 		success:function(data){
 			console.info(data);
 			if(data.code != "1"){

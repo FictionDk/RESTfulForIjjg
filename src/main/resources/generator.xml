@@ -53,6 +53,10 @@
 					enableCountByExample="false" enableDeleteByExample="false" 
 					enableSelectByExample="false" enableUpdateByExample="false">
 		</table>
+		<table tableName="ijjg_message" domainObjectName="Message" 
+					enableCountByExample="false" enableDeleteByExample="false" 
+					enableSelectByExample="false" enableUpdateByExample="false">
+		</table>
 		
 		<!-- 不生成example相关类 
 		<table tableName="jjg_goods" domainObjectName="Good" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">

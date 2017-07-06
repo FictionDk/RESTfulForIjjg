@@ -28,7 +28,8 @@ public class SecurityAspect {
 	@Autowired
 	private HttpServletResponse response;
 	
-	private static final String[] ALLOW_ACTION = {"/ijjg/view","/ijjg/user/login","/ijjg/user/getRegisteCode","/ijjg/user/registeAct"};
+	private static final String[] ALLOW_ACTION = {"/ijjg/view","/ijjg/token",
+			"/ijjg/user/login","/ijjg/user/getRegisteCode","/ijjg/user/registeAct"};
 	private TokenManager tokenManage;
 	
 	@SuppressWarnings("unused")

@@ -1,11 +1,17 @@
 package org.fictio.shop.ijjg.common;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 本地缓存(单例)
+ * @author dk
+ *
+ */
 public class CacheManager {
 	
 	private static CacheManager instance = new CacheManager();
-	private static ConcurrentHashMap<String,String> cacheMap = new ConcurrentHashMap<>(); 
+	private static Map<String,String> cacheMap = new ConcurrentHashMap<>(); 
 	
 	private CacheManager(){};
 	public static CacheManager getInstance(){
@@ -31,5 +37,9 @@ public class CacheManager {
 	public void cleanValue(String key){
 		cacheMap.remove(key);
 	}
-
+	
+	public Map<String,String> getCacheMap(){
+		return cacheMap;
+	}
+	
 }
